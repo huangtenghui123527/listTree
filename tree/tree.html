@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.7.2.min.js"></script>
+    <!--<script src="jquery-3.2.1.min.js"></script>-->
+    <style>
+        html,body{
+            width: 100%;
+            height: 100%;
+            margin:0;
+        }
+
+        #treeList{
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        #treeList .tree{
+            width: 200px;
+            list-style: none;
+            padding: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #treeList .tree .tag{
+            padding: 10px 20px;
+            border: 1px solid #eee;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="treeList">
+        <ul class="tree"></ul>
+        <div class="canvas">
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    var list=[{
+        id:'01',name:'super01',pid:null,
+    },{
+        id:'02',name:'super02',pid:null,
+    },{
+        id:'03',name:'super03',pid:'01',
+    },{
+        id:'04',name:'super04',pid:'01',
+    },{
+        id:'05',name:'super05',pid:'01',
+    },{
+        id:'06',name:'super06',pid:'02',
+    },{
+        id:'07',name:'super07',pid:'02',
+    },{
+        id:'08',name:'super08',pid:'03',
+    },{
+        id:'09',name:'super09',pid:'03',
+    },{
+        id:'10',name:'super10',pid:'04',
+    },{
+        id:'11',name:'super11',pid:'06',
+    },{
+        id:'12',name:'super12',pid:'06',
+    },{
+        id:'13',name:'super13',pid:'05',
+    },{
+        id:'14',name:'super14',pid:'05',
+    },{
+        id:'15',name:'super15',pid:'14',
+    },{
+        id:'16',name:'super16',pid:'14',
+    },{
+        id:'17',name:'super17',pid:'16',
+    },];
+
+    for(var i=0;i<list.length;i++){
+        (function (i) {
+            if(!list[i].pid){
+                var dom='<li class="tag" id="'+list[i].id+'">'+list[i].name+'</li>';
+                $(dom).appendTo('#treeList .tree').hover(function (e) {
+                    showChildList($(this).attr('id'));
+                    e.stopPropagation();
+                },function (e) {
+                    hideChildList($(this).attr('id'));
+                    e.stopPropagation();
+                }).click(function (e) {
+                    alert(e.currentTarget.innerHTML)
+                    e.stopPropagation();
+                })
+            }
+        })(i)
+    }
+
+    function showChildList(id) {
+        var eleAttr = searchEle(id);
+        var currentLiTop = $('#' + id).position().top;
+        var currentLiLeft = $('#' + id).position().left + $('#' + id).width() + 42;
+        if (eleAttr.length) {
+            if (!$('#' + eleAttr[0].id).length) {
+                $('<ul class="tree" style="position:absolute;top:'+currentLiTop+'px;left:'+currentLiLeft+'px"></ul>').appendTo('#'+id).mouseleave(function (e) {
+                    $(this).hide();
+                    e.stopPropagation();
+                });
+                for (var item of eleAttr) {
+                    var dom = '<li class="tag" id="' + item.id + '">' + item.name + '</li>';
+                    $(dom).appendTo('#'+id+'>ul').hover(function (e) {
+                        showChildList($(this).attr('id'));
+                        e.stopPropagation();
+                    },function (e) {
+                        hideChildList($(this).attr('id'));
+                        e.stopPropagation();
+                    }).click(function (e) {
+                        alert(e.currentTarget.innerHTML)
+                        e.stopPropagation();
+                    })
+                }
+            }else{
+                $('#' + id).parent().find('ul').hide()
+                $('#' + eleAttr[0].id).parent().show();
+            }
+        }
+    };
+    function hideChildList(id){
+        var eleAttr = searchEle(id);
+        if (eleAttr.length){
+            $('#' + eleAttr[0].id).parent().hide();
+        }
+    }
+    function searchEle(id) {
+        var attr=[];
+        for(var i in list){
+            if(list[i].pid==id){
+                attr.push(list[i]);
+            }
+        };
+        return attr;
+    }
+
+</script>
