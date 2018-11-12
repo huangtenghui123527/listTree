@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script  src="jquery-1.7.2.min.js"></script>
+    <style type="text/css">
+        html,body{
+            margin: 0px;
+            width: 100%;
+            height: 100%;
+        }
+        #listTree{
+            /*width: 100%;*/
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .list-content{
+            padding: 10px 20px;
+            display: inline-block;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            margin:0 30px;
+        }
+
+        .list-content::after{
+            border-top: 1px solid #999;
+            top: 20px;
+            width: 25px;
+            content: '';
+            left: -26px;
+            position: absolute;
+        }
+        .list-content::before{
+            border-bottom: 1px solid #999;
+            top: 20px;
+            width: 25px;
+            content: '';
+            right: -26px;
+            position: absolute;
+
+        }
+        .tag-sp{
+            display: inline-block;
+        }
+
+    </style>
+</head>
+<body>
+<div id="listTree"></div>
+
+</body>
+<script>
+
+    var list=[{
+        id:'01',name:'super01',pid:null,
+    },{
+        id:'02',name:'super02',pid:null,
+    },{
+        id:'03',name:'super03',pid:'01',
+    },{
+        id:'04',name:'super04',pid:'01',
+    },{
+        id:'05',name:'super05',pid:'01',
+    },{
+        id:'06',name:'super06',pid:'02',
+    },{
+        id:'07',name:'super07',pid:'02',
+    },{
+        id:'08',name:'super08',pid:'03',
+    },{
+        id:'09',name:'super09',pid:'03',
+    },{
+        id:'10',name:'super10',pid:'04',
+    },{
+        id:'11',name:'super11',pid:'06',
+    },{
+        id:'12',name:'super12',pid:'06',
+    },{
+        id:'13',name:'super13',pid:'05',
+    },{
+        id:'14',name:'super14',pid:'05',
+    },{
+        id:'15',name:'super15',pid:'14',
+    },{
+        id:'16',name:'super16',pid:'14',
+    },{
+        id:'17',name:'super17',pid:'16',
+    },];
+
+    for (var item of list){
+        if (!item.pid){
+            // var eleAttr=searchEle(item.id);
+            var dom='<div id="'+item.id+'"><span class="list-content" style="position:relative;top: 0;">'+item.name+'</span><div class="tag-sp" id="tag'+item.id+'"></div></div>';
+            $('#listTree').append(dom);
+            creatChild(item.id);
+        }
+    }
+
+    function creatChild(id) {
+        var eleAttr=searchEle(id);
+        if (eleAttr.length){
+            for (var item of eleAttr){
+                var dom='<div id="'+item.id+'" style="padding: 10px 0;"><span class="list-content" style="position:relative;top: 0;">'+item.name+'</span><div class="tag-sp" id="tag'+item.id+'"></div></div>';
+                $('#tag'+id).append(dom);
+                creatChild(item.id)
+            }
+            var ph=($('#tag' + id).height()-$('#tag' + id).siblings('span').height()-22)/2;
+            $('#tag' + id).siblings('span').css('top','-'+ph+'px');
+            $('#exp').height($('#listTree').height());
+            $('#exp').width($('#listTree').width());
+        }
+    }
+    function searchEle(id) {
+        var attr=[];
+        for(var i in list){
+            if(list[i].pid==id){
+                attr.push(list[i]);
+            }
+        };
+        return attr;
+    }
+</script>
+</html>
