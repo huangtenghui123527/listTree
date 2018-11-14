@@ -14,9 +14,10 @@
 
         #treeList{
             width: 100%;
-            height: 500px;
+            height: 300px;
             overflow-y: scroll;
             position: relative;
+            background:#eee;
         }
         #treeList .tree{
             width: 200px;
@@ -28,7 +29,7 @@
         }
         #treeList .tree .tag{
             padding: 10px 20px;
-            border: 1px solid #eee;
+            border: 1px solid black;
             -webkit-border-radius: 5px;
             -moz-border-radius: 5px;
             border-radius: 5px;
@@ -39,9 +40,7 @@
 </head>
 <body>
     <div id="treeList">
-        <ul class="tree"></ul>
-        <div class="canvas">
-        </div>
+        <ul class="tree" id="rootNode"></ul>
     </div>
 </body>
 </html>
@@ -81,29 +80,51 @@
     },{
         id:'17',name:'super17',pid:'16',
     },{
-        id:'18',name:'super01',pid:null,
+        id:'18',name:'super01',pid:'01',
     },{
-        id:'19',name:'super02',pid:null,
+        id:'19',name:'super02',pid:'01',
     },{
-        id:'20',name:'super01',pid:null,
+        id:'20',name:'super01',pid:'01',
     },{
-        id:'21',name:'super02',pid:null,
+        id:'21',name:'super02',pid:'01',
     },{
-        id:'22',name:'super01',pid:null,
+        id:'22',name:'super01',pid:'01',
     },{
-        id:'23',name:'super02',pid:null,
+        id:'23',name:'super02',pid:'01',
     },{
-        id:'24',name:'super01',pid:null,
+        id:'24',name:'super01',pid:'01',
     },{
-        id:'25',name:'super02',pid:null,
+        id:'25',name:'super02',pid:'01',
     },{
-        id:'26',name:'super01',pid:null,
+        id:'26',name:'super01',pid:'01',
     },{
-        id:'27',name:'super02',pid:null,
+        id:'27',name:'super02',pid:'05',
     },{
-        id:'28',name:'super01',pid:null,
+        id:'28',name:'super01',pid:'05',
     },{
-        id:'29',name:'super02',pid:null,
+        id:'29',name:'super02',pid:'05',
+    },,{
+        id:'30',name:'super01',pid:'05',
+    },{
+        id:'31',name:'super02',pid:'05',
+    },{
+        id:'32',name:'super01',pid:'05',
+    },{
+        id:'33',name:'super02',pid:'05',
+    },{
+        id:'34',name:'super01',pid:'05',
+    },{
+        id:'35',name:'super02',pid:'05',
+    },{
+        id:'36',name:'super01',pid:'05',
+    },{
+        id:'37',name:'super02',pid:'05',
+    },{
+        id:'38',name:'super01',pid:'05',
+    },{
+        id:'39',name:'super02',pid:'05',
+    },{
+        id:'40',name:'super01',pid:'05',
     },];
 
     for(var i=0;i<list.length;i++){
@@ -131,7 +152,8 @@
         if (eleAttr.length) {
             if (!$('#' + eleAttr[0].id).length) {
                 $('<ul class="tree" style="position:absolute;top:'+currentLiTop+'px;left:'+currentLiLeft+'px"></ul>').appendTo('#'+id).mouseleave(function (e) {
-                    $(this).hide();
+                    // console.log($('#rootNode .tree'));
+
                     e.stopPropagation();
                 });
                 for (var item of eleAttr) {
