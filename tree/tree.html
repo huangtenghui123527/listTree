@@ -144,6 +144,10 @@
             this.load();
             // this.creatMeuns();
         },
+        /**
+         * load:初始化加载数据
+         *
+         * */
         load:function(){
             var _this=this;
             for(var i=0;i<list.length;i++){
@@ -156,7 +160,10 @@
 
             $('#rootNode .ulTree').css('display','none');
         },
-
+        /**
+         * creatMeuns：创建子菜单
+         * @ID
+         * */
         creatMeuns:function(id) {
             var eleAttr = searchEle(id);
             var currentLiTop = $('#' + id).position().top;
@@ -166,13 +173,7 @@
                     $('<ul class="ulTree" style="position:absolute;top:' + currentLiTop + 'px;left:' + currentLiLeft + 'px"></ul>').appendTo('#' + id)
                     for (var item of eleAttr) {
                         var dom = '<li class="tag" id="' + item.id + '">' + item.name + '</li>';
-                        $(dom).appendTo('#' + id + '>ul').hover(function (e) {
-                            showChildList($(this).attr('id'));
-                            e.stopPropagation();
-                        }, function (e) {
-                            hideChildList($(this).attr('id'));
-                            e.stopPropagation();
-                        })
+                        $(dom).appendTo('#' + id + '>ul')
                         this.creatMeuns(item.id);
                     }
                 } else {
@@ -181,20 +182,14 @@
                 }
             }
         }
-
     }
 
     meuns.init();
 
-    function showChildList(id) {
-        console.log(id);
-    }
-    function hideChildList(id){
-        var eleAttr = searchEle(id);
-        if (eleAttr.length){
-            $('#' + eleAttr[0].id).parent().hide();
-        }
-    }
+
+    /**
+     * searchEle:根据所传ID查询其子元素数据
+     * **/
     function searchEle(id) {
         var attr=[];
             for(var i in list){
