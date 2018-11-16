@@ -14,12 +14,12 @@
 
         #treeList{
             width: 100%;
-            height: 300px;
+            height: 100%;
             overflow-y: scroll;
             position: relative;
             background:#eee;
         }
-        #treeList .tree{
+        #treeList .tree,.ulTree{
             width: 200px;
             list-style: none;
             padding: 0;
@@ -36,12 +36,25 @@
             font-size: 16px;
             cursor: pointer;
         }
+        #other{
+            padding: 10px 20px;
+            border: 1px solid black;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .ulTree li:hover > .ulTree{
+            display: block !important;
+        }
     </style>
 </head>
 <body>
     <div id="treeList">
-        <ul class="tree" id="rootNode"></ul>
+        <ul class="tree ulTree"  id="rootNode"></ul>
     </div>
+    <div id="other"> hehe</div>
 </body>
 </html>
 <script>
@@ -80,101 +93,102 @@
     },{
         id:'17',name:'super17',pid:'16',
     },{
-        id:'18',name:'super01',pid:'01',
+        id:'18',name:'super18',pid:'01',
     },{
-        id:'19',name:'super02',pid:'01',
+        id:'19',name:'super19',pid:'01',
     },{
-        id:'20',name:'super01',pid:'01',
+        id:'20',name:'super20',pid:'01',
     },{
-        id:'21',name:'super02',pid:'01',
+        id:'21',name:'super21',pid:'01',
     },{
-        id:'22',name:'super01',pid:'01',
+        id:'22',name:'super22',pid:'01',
     },{
-        id:'23',name:'super02',pid:'01',
+        id:'23',name:'super23',pid:'01',
     },{
-        id:'24',name:'super01',pid:'01',
+        id:'24',name:'super24',pid:'01',
     },{
-        id:'25',name:'super02',pid:'01',
+        id:'25',name:'super25',pid:'01',
     },{
-        id:'26',name:'super01',pid:'01',
+        id:'26',name:'super26',pid:'01',
     },{
-        id:'27',name:'super02',pid:'05',
+        id:'27',name:'super27',pid:'05',
     },{
-        id:'28',name:'super01',pid:'05',
+        id:'28',name:'super28',pid:'05',
     },{
-        id:'29',name:'super02',pid:'05',
-    },,{
-        id:'30',name:'super01',pid:'05',
+        id:'29',name:'super29',pid:'05',
     },{
-        id:'31',name:'super02',pid:'05',
+        id:'30',name:'super30',pid:'05',
     },{
-        id:'32',name:'super01',pid:'05',
+        id:'31',name:'super31',pid:'05',
     },{
-        id:'33',name:'super02',pid:'05',
+        id:'32',name:'super32',pid:'05',
     },{
-        id:'34',name:'super01',pid:'05',
+        id:'33',name:'super33',pid:'05',
     },{
-        id:'35',name:'super02',pid:'05',
+        id:'34',name:'super34',pid:'05',
     },{
-        id:'36',name:'super01',pid:'05',
+        id:'35',name:'super35',pid:'05',
     },{
-        id:'37',name:'super02',pid:'05',
+        id:'36',name:'super36',pid:'05',
     },{
-        id:'38',name:'super01',pid:'05',
+        id:'37',name:'super37',pid:'05',
     },{
-        id:'39',name:'super02',pid:'05',
+        id:'38',name:'super38',pid:'05',
     },{
-        id:'40',name:'super01',pid:'05',
+        id:'39',name:'super39',pid:'05',
+    },{
+        id:'40',name:'super40',pid:'05',
     },];
-
-    for(var i=0;i<list.length;i++){
-        (function (i) {
-            if(!list[i].pid){
-                var dom='<li class="tag" id="'+list[i].id+'">'+list[i].name+'</li>';
-                $(dom).appendTo('#treeList .tree').hover(function (e) {
-                    showChildList($(this).attr('id'));
-                    e.stopPropagation();
-                },function (e) {
-                    hideChildList($(this).attr('id'));
-                    e.stopPropagation();
-                }).click(function (e) {
-                    alert(e.currentTarget.innerHTML)
-                    e.stopPropagation();
-                })
-            }
-        })(i)
-    }
-
-    function showChildList(id) {
-        var eleAttr = searchEle(id);
-        var currentLiTop = $('#' + id).position().top;
-        var currentLiLeft = $('#' + id).position().left + $('#' + id).width() + 42;
-        if (eleAttr.length) {
-            if (!$('#' + eleAttr[0].id).length) {
-                $('<ul class="tree" style="position:absolute;top:'+currentLiTop+'px;left:'+currentLiLeft+'px"></ul>').appendTo('#'+id).mouseleave(function (e) {
-                    // console.log($('#rootNode .tree'));
-
-                    e.stopPropagation();
-                });
-                for (var item of eleAttr) {
-                    var dom = '<li class="tag" id="' + item.id + '">' + item.name + '</li>';
-                    $(dom).appendTo('#'+id+'>ul').hover(function (e) {
-                        showChildList($(this).attr('id'));
-                        e.stopPropagation();
-                    },function (e) {
-                        hideChildList($(this).attr('id'));
-                        e.stopPropagation();
-                    }).click(function (e) {
-                        alert(e.currentTarget.innerHTML)
-                        e.stopPropagation();
-                    })
+    var meuns={
+        init:function () {
+            this.load();
+            // this.creatMeuns();
+        },
+        load:function(){
+            var _this=this;
+            for(var i=0;i<list.length;i++){
+                if(!list[i].pid){
+                    var dom='<li class="tag" id="'+list[i].id+'">'+list[i].name+'</li>';
+                    $(dom).appendTo('#treeList .tree');
+                    _this.creatMeuns(list[i].id);
                 }
-            }else{
-                $('#' + id).parent().find('ul').hide()
-                $('#' + eleAttr[0].id).parent().show();
+            }
+
+            $('#rootNode .ulTree').css('display','none');
+        },
+
+        creatMeuns:function(id) {
+            var eleAttr = searchEle(id);
+            var currentLiTop = $('#' + id).position().top;
+            var currentLiLeft = $('#' + id).position().left + $('#' + id).width() + 42;
+            if (eleAttr.length) {
+                if (!$('#' + eleAttr[0].id).length) {
+                    $('<ul class="ulTree" style="position:absolute;top:' + currentLiTop + 'px;left:' + currentLiLeft + 'px"></ul>').appendTo('#' + id)
+                    for (var item of eleAttr) {
+                        var dom = '<li class="tag" id="' + item.id + '">' + item.name + '</li>';
+                        $(dom).appendTo('#' + id + '>ul').hover(function (e) {
+                            showChildList($(this).attr('id'));
+                            e.stopPropagation();
+                        }, function (e) {
+                            hideChildList($(this).attr('id'));
+                            e.stopPropagation();
+                        })
+                        this.creatMeuns(item.id);
+                    }
+                } else {
+                    $('#' + id).parent().find('ul').hide()
+                    $('#' + eleAttr[0].id).parent().show();
+                }
             }
         }
-    };
+
+    }
+
+    meuns.init();
+
+    function showChildList(id) {
+        console.log(id);
+    }
     function hideChildList(id){
         var eleAttr = searchEle(id);
         if (eleAttr.length){
@@ -183,11 +197,11 @@
     }
     function searchEle(id) {
         var attr=[];
-        for(var i in list){
-            if(list[i].pid==id){
-                attr.push(list[i]);
-            }
-        };
+            for(var i in list){
+                if(list[i].pid==id){
+                    attr.push(list[i]);
+                }
+            };
         return attr;
     }
 
